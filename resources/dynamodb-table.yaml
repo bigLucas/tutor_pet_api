@@ -1,0 +1,5 @@
+Resources:
+  PetTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: pet-table

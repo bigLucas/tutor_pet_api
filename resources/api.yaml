@@ -1,0 +1,13 @@
+Resources:
+  TutorPetAPI:  
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: tutor-pet-api
+      Cors: "'*'"
+      StageName: !Ref Stage
+      Auth:
+        AddDefaultAuthorizerToCorsPreflight: false
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !GetAtt CognitoUserPool.Arn
+        DefaultAuthorizer: CognitoAuthorizer

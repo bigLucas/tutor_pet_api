@@ -1,0 +1,21 @@
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Runtime: go1.x
+    Timeout: 3
+    MemorySize: 128
+    # Environment:
+    #   Variables:
+    #     TABLE_NAME: data-table
+
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - hml
+      - prod
+    Description: "Enter the stage name: dev, hml, or prod. Default is dev."
+
+Resources:

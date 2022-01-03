@@ -1,0 +1,107 @@
+Resources:
+  Create:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: pet-create
+      CodeUri: src/handlers/pet-create
+      Policies:
+        - AWSLambdaExecute
+        - Version: '2012-10-17' 
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:UpdateItem
+              Resource: !GetAtt PetTable.Arn
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /pets
+            Method: post
+            RestApiId: !Ref TutorPetAPI
+  FindMany:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: pet-find-many
+      CodeUri: src/handlers/pet-find-many
+      Policies:
+        - AWSLambdaExecute
+        - Version: '2012-10-17' 
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:Scan
+              Resource: !GetAtt PetTable.Arn
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /pets
+            Method: get
+            RestApiId: !Ref TutorPetAPI
+  FindOne:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: pet-find-one
+      CodeUri: src/handlers/pet-find-one
+      Policies:
+        - AWSLambdaExecute
+        - Version: '2012-10-17' 
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:Query
+              Resource: !GetAtt PetTable.Arn
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /pets/{id}
+            Method: get
+            RestApiId: !Ref TutorPetAPI
+            RequestParameters:
+              - method.request.path.id
+  Update:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: pet-update
+      CodeUri: src/handlers/pet-update
+      Policies:
+        - AWSLambdaExecute
+        - Version: '2012-10-17' 
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:UpdateItem
+              Resource: !GetAtt PetTable.Arn
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /pets/{id}
+            Method: put
+            RestApiId: !Ref TutorPetAPI
+            RequestParameters:
+              - method.request.path.id
+  Delete:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: pet-delete
+      CodeUri: src/handlers/pet-delete
+      Policies:
+        - AWSLambdaExecute
+        - Version: '2012-10-17' 
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DeleteItem
+              Resource: !GetAtt PetTable.Arn
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /pets/{id}
+            Method: delete
+            RestApiId: !Ref TutorPetAPI
+            RequestParameters:
+              - method.request.path.id
