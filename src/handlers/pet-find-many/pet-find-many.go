@@ -5,6 +5,7 @@ import (
 	"tutor-pet-api/src/services"
 
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -27,13 +28,19 @@ func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 	service := services.NewPetService(repository)
 
 	// calling the service
-	_, err = service.FindMany()
+	res, err := service.FindMany()
 	if err != nil {
 		fmt.Println(err)
 		return events.APIGatewayProxyResponse{StatusCode: 500, Body: "{\"message\":\"Internal Server error!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
 	}
 
-	return events.APIGatewayProxyResponse{StatusCode: 200, Body: "{\"message\":\"Everything is good!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
+	res_body, err := json.Marshal(res)
+	if err != nil {
+		fmt.Println(err)
+		return events.APIGatewayProxyResponse{StatusCode: 500, Body: "{\"message\":\"Internal Server error!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
+	}
+
+	return events.APIGatewayProxyResponse{StatusCode: 200, Body: string(res_body), Headers: map[string]string{"Content-Type": "application/json"}}, nil
 }
 
 func main() {

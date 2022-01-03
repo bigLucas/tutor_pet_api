@@ -5,6 +5,7 @@ import (
 	"tutor-pet-api/src/services"
 
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -26,17 +27,24 @@ func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 	repository := repositories.NewPetRepository(db_client, aws.String(TABLE_NAME))
 	service := services.NewPetService(repository)
 	id := event.PathParameters["id"]
-	nice := event.PathParameters["nice"]
-	fmt.Println("debug", nice)
 
 	// calling the service
-	_, err = service.FindOne(id)
+	res, err := service.FindOne(id)
+	if err != nil {
+		fmt.Println(err)
+		if err.Error() == "not found" {
+			return events.APIGatewayProxyResponse{StatusCode: 404, Body: "{\"message\":\"Not found!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
+		}
+		return events.APIGatewayProxyResponse{StatusCode: 500, Body: "{\"message\":\"Internal Server error!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
+	}
+
+	res_body, err := json.Marshal(res)
 	if err != nil {
 		fmt.Println(err)
 		return events.APIGatewayProxyResponse{StatusCode: 500, Body: "{\"message\":\"Internal Server error!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
 	}
 
-	return events.APIGatewayProxyResponse{StatusCode: 200, Body: "{\"message\":\"Everything is good!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
+	return events.APIGatewayProxyResponse{StatusCode: 200, Body: string(res_body), Headers: map[string]string{"Content-Type": "application/json"}}, nil
 }
 
 func main() {

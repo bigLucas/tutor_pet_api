@@ -34,7 +34,7 @@ func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 		return events.APIGatewayProxyResponse{StatusCode: 500, Body: "{\"message\":\"Internal Server error!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
 	}
 
-	return events.APIGatewayProxyResponse{StatusCode: 200, Body: "{\"message\":\"Everything is good!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
+	return events.APIGatewayProxyResponse{StatusCode: 200, Body: "{\"message\":\"Deleted!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
 }
 
 func main() {

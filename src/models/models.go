@@ -1,7 +1,8 @@
 package models
 
 type Pet struct {
-	Name    string `json:"name"`
-	Age     int    `json:"age"`
-	TutorID int    `json:"tutorID"`
+	ID      string `json:"id" dynamodbav:"id"`
+	Name    string `json:"name" dynamodbav:"name"`
+	Age     int    `json:"age" dynamodbav:"age"`
+	TutorID int    `json:"tutorID" dynamodbav:"tutor_id"`
 }

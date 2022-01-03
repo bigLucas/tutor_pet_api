@@ -43,17 +43,10 @@ func (p *PetRepository) FindOne(id string) (*dynamodb.QueryOutput, error) {
 }
 
 func (p *PetRepository) FindMany() (*dynamodb.ScanOutput, error) {
-	// cond := expression.Key("id").Equal(expression.Value("*"))
-	// expr, err := expression.NewBuilder().WithKeyCondition(cond).Build()
-	// if err != nil {
-	// 	return nil, err
-	// }
-
 	input := &dynamodb.ScanInput{
 		TableName: p.table_name,
 	}
 
-	// HERE --> I need to finish using the SCAN api
 	res, err := p.database.Scan(context.TODO(), input)
 	if err != nil {
 		return nil, err
@@ -105,7 +98,7 @@ func (p *PetRepository) Delete(id string) (*dynamodb.DeleteItemOutput, error) {
 
 	input := &dynamodb.DeleteItemInput{
 		Key: map[string]types.AttributeValue{
-			"id": &types.AttributeValueMemberN{Value: id},
+			"id": &types.AttributeValueMemberS{Value: id},
 		},
 		TableName:                 p.table_name,
 		ExpressionAttributeNames:  expr.Names(),

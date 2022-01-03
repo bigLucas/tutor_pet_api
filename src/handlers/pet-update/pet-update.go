@@ -36,13 +36,19 @@ func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 	id := event.PathParameters["id"]
 
 	// calling the service
-	_, err = service.Update(id, pet)
+	res, err := service.Update(id, pet)
 	if err != nil {
 		fmt.Println(err)
 		return events.APIGatewayProxyResponse{StatusCode: 500, Body: "{\"message\":\"Internal Server error!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
 	}
 
-	return events.APIGatewayProxyResponse{StatusCode: 200, Body: "{\"message\":\"Everything is good!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
+	res_body, err := json.Marshal(res)
+	if err != nil {
+		fmt.Println(err)
+		return events.APIGatewayProxyResponse{StatusCode: 500, Body: "{\"message\":\"Internal Server error!\"}", Headers: map[string]string{"Content-Type": "application/json"}}, nil
+	}
+
+	return events.APIGatewayProxyResponse{StatusCode: 200, Body: string(res_body), Headers: map[string]string{"Content-Type": "application/json"}}, nil
 }
 
 func main() {

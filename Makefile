@@ -9,7 +9,7 @@ run-local: build
 
 .PHONY: deploy
 deploy: build
-	sam deploy --no-confirm-changeset
+	sam deploy
 	# rm -rf .aws-sam template.yaml
 
 .PHONY: delete
