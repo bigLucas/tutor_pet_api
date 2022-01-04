@@ -64,16 +64,25 @@ func (p *PetService) FindMany() ([]models.Pet, error) {
 }
 
 func (p *PetService) Update(id string, pet models.Pet) (models.Pet, error) {
-	_, err := p.repo.CreateOrUpdate(id, pet)
+	_, err := p.FindOne(id)
 	if err != nil {
 		return pet, err
 	}
+	_, err = p.repo.CreateOrUpdate(id, pet)
+	if err != nil {
+		return pet, err
+	}
+	pet.ID = id
 
 	return pet, nil
 }
 
 func (p *PetService) Delete(id string) error {
-	_, err := p.repo.Delete(id)
+	_, err := p.FindOne(id)
+	if err != nil {
+		return err
+	}
+	_, err = p.repo.Delete(id)
 	if err != nil {
 		return err
 	}

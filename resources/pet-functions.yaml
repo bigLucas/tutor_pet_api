@@ -73,6 +73,7 @@ Resources:
             - Effect: Allow
               Action:
                 - dynamodb:UpdateItem
+                - dynamodb:Query
               Resource: !GetAtt PetTable.Arn
       Events:
         ApiEvent:
@@ -95,6 +96,7 @@ Resources:
             - Effect: Allow
               Action:
                 - dynamodb:DeleteItem
+                - dynamodb:Query
               Resource: !GetAtt PetTable.Arn
       Events:
         ApiEvent:

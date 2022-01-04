@@ -27,6 +27,9 @@ func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 	// calling the service
 	err = service.Delete(id)
 	if err != nil {
+		if err.Error() == "not found" {
+			return utils.BuildNotFoundErrorRes(err)
+		}
 		return utils.BuildInternalServerErrorRes(err)
 	}
 

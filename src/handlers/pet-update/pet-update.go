@@ -33,6 +33,9 @@ func handler(ctx context.Context, event events.APIGatewayProxyRequest) (events.A
 	// calling the service
 	res, err := service.Update(id, pet)
 	if err != nil {
+		if err.Error() == "not found" {
+			return utils.BuildNotFoundErrorRes(err)
+		}
 		return utils.BuildInternalServerErrorRes(err)
 	}
 
