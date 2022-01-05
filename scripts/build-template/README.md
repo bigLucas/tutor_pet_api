@@ -1,5 +1,6 @@
 # build-template
 - This is a build template tool for AWS CloudFormation templates. The tool was built to put all resources together in the same template.
+- Using the tool we **avoid** to use the [Outputs](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html) of each resource and the [nested stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html) of AWS CloudFormation.
 - Folder structure sample:
   ```
   root folder
@@ -84,4 +85,3 @@
         ExplicitAuthFlows:
           - ALLOW_USER_PASSWORD_AUTH
   ```
-- Using the tool we **avoid** to use the [Outputs](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html) of each resource and use the [nested stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-nested-stacks.html) of AWS CloudFormation.
