@@ -2,10 +2,10 @@
 
 Simple CRUD API written in **Go**, built using **AWS SAM** tool and using the **AWS'** infrastructure.
 
-Macro architecture:\
+**Macro architecture**:\
 ![Macro architecture](readme-images/tutor_pet_api-macro_architecture.jpg)
 
-Code architecture:\
+**Code architecture**:\
 ![Code architecture](readme-images/tutor_pet_api-code.jpg)
 
 ## **Pre-Requisites**
@@ -26,7 +26,7 @@ make run-local
     ```bash
     make deploy
     ```
-2. Get the Cognito `user-pool-id` and Cognito user-pool `clint-id` on **AWS console**:
+2. Get the Cognito `user-pool-id` and Cognito user-pool `clint-id` at **AWS console**:
     ![UserPool ID](readme-images/getting_user_pool_id.jpg)
     ![Client ID](readme-images/getting_user_pool_client_id.jpg)
 3. Run the following script to **add an user to the Cognito** `UserPool` and get a **token** to call the API *(remember to add the right values to the env vars before the command)*:
@@ -36,14 +36,14 @@ make run-local
     ```bash
     USER_POOL_ID= CLIENT_ID= USER_NAME=your@email.com TEMPORARY_PASSWORD=T3ST@go NEW_PASSWORD=T3ST@golang NAME="" FAMILY_NAME="" ./scripts/cognito_add_test_user.sh
     ```
-4. After this command is possible to get a new token with the following commands:
+4. After the `cognito_add_test_user.sh` script it's possible to get a **new token** with the following commands:
     ```bash
     chmod +x scripts/cognito_get_token_test_user.sh
     ```
     ```bash
     USER_POOL_ID= CLIENT_ID= USER_NAME=your@email.com NEW_PASSWORD=T3ST@golang ./scripts/cognito_get_token_test_user.sh
     ```
-5. Get the API URL
+5. Get the API URL:
     ![API URL](readme-images/getting_api_url.JPG)
 
 If completed successfully, user a tool like *curl* or *Postman* to test the API passing the **token** in the `Authorization` header.
