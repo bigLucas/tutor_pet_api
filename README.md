@@ -49,6 +49,11 @@ make run-local
 If completed successfully, user a tool like *curl* or *Postman* to test the API passing the **token** in the `Authorization` header.
 You can also check the stack status inside AWS' console at *CloudFormation* service.
 
+**Note:** *To remove all the **aws services** run the below command, it should remove the stack created by the **sam cli***
+```bash
+make delete
+```
+
 ## **Call sample**
 ```bash
 curl --request POST \
@@ -75,5 +80,10 @@ This folder has some useful scripts to help the development process
 - **types**: Here we can put DTOs (data transfer objects) for responses or requests.
 - **utils**: Some useful code to avoid duplication.
 
-## **Testing**
-*TODO*
+## **Testing** [WIP]
+Really good [example](https://ieftimov.com/post/testing-in-go-test-doubles-by-example/) of writing unit test with mocks and spies.
+### **Unit tests**
+Run the below command:
+```bash
+make unit-test
+```

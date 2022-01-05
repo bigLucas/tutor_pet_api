@@ -15,12 +15,12 @@ import (
 
 const TableName = "pet-table"
 
-func InitDBClient() (*dynamodb.Client, error) {
+func InitDBClient() (*DynamoDBClient, error) {
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		return nil, err
 	}
-	return dynamodb.NewFromConfig(cfg), nil
+	return &DynamoDBClient{Client: dynamodb.NewFromConfig(cfg)}, nil
 }
 
 func BuildRes(statusCode int, body interface{}) (events.APIGatewayProxyResponse, error) {

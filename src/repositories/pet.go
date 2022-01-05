@@ -1,20 +1,22 @@
 package repositories
 
 import (
-	"context"
 	"tutor-pet-api/src/models"
+	"tutor-pet-api/src/types"
+
+	"context"
 
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
-	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	dynamodb_types "github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 )
 
 type PetRepository struct {
-	database   *dynamodb.Client
+	database   types.Database
 	table_name *string
 }
 
-func NewPetRepository(database *dynamodb.Client, table_name *string) *PetRepository {
+func NewPetRepository(database types.Database, table_name *string) *PetRepository {
 	return &PetRepository{
 		database:   database,
 		table_name: table_name,
@@ -72,8 +74,8 @@ func (p *PetRepository) CreateOrUpdate(id string, pet models.Pet) (*dynamodb.Upd
 	}
 
 	input := &dynamodb.UpdateItemInput{
-		Key: map[string]types.AttributeValue{
-			"id": &types.AttributeValueMemberS{Value: id},
+		Key: map[string]dynamodb_types.AttributeValue{
+			"id": &dynamodb_types.AttributeValueMemberS{Value: id},
 		},
 		TableName:                 p.table_name,
 		ExpressionAttributeNames:  expr.Names(),
@@ -97,8 +99,8 @@ func (p *PetRepository) Delete(id string) (*dynamodb.DeleteItemOutput, error) {
 	}
 
 	input := &dynamodb.DeleteItemInput{
-		Key: map[string]types.AttributeValue{
-			"id": &types.AttributeValueMemberS{Value: id},
+		Key: map[string]dynamodb_types.AttributeValue{
+			"id": &dynamodb_types.AttributeValueMemberS{Value: id},
 		},
 		TableName:                 p.table_name,
 		ExpressionAttributeNames:  expr.Names(),

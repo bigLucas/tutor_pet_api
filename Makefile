@@ -18,7 +18,7 @@ delete:
 
 .PHONY: unit-test
 unit-test:
-	go test -tags=unit
+	go test -tags=unit -v ./...
 
 .PHONY: integraiton-test
 integraiton-test:
