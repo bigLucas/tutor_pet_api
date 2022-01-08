@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"os"
 	"tutor-pet-api/src/types"
 
 	"context"
@@ -9,18 +10,49 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 )
 
 const TableName = "pet-table"
 
 func InitDBClient() (*DynamoDBClient, error) {
-	cfg, err := config.LoadDefaultConfig(context.TODO())
-	if err != nil {
-		return nil, err
+	if isLocal() {
+		cfg, err := config.LoadDefaultConfig(
+			context.TODO(),
+			config.WithRegion("localhost"),
+			config.WithEndpointResolverWithOptions(aws.EndpointResolverWithOptionsFunc(
+				func(service, region string, options ...interface{}) (aws.Endpoint, error) {
+					return aws.Endpoint{URL: "http://localhost:8000"}, nil
+				},
+			)),
+			config.WithCredentialsProvider(credentials.StaticCredentialsProvider{
+				Value: aws.Credentials{
+					AccessKeyID:     "local",
+					SecretAccessKey: "local",
+					SessionToken:    "local",
+					Source:          "Dummy values for localhost",
+				},
+			}),
+		)
+		if err != nil {
+			return nil, err
+		}
+		return &DynamoDBClient{Client: dynamodb.NewFromConfig(cfg)}, nil
+	} else {
+		cfg, err := config.LoadDefaultConfig(context.TODO())
+		if err != nil {
+			return nil, err
+		}
+		return &DynamoDBClient{Client: dynamodb.NewFromConfig(cfg)}, nil
 	}
-	return &DynamoDBClient{Client: dynamodb.NewFromConfig(cfg)}, nil
+}
+
+func isLocal() bool {
+	fmt.Println("debug 1", os.Getenv("API_ENV"))
+	return os.Getenv("API_ENV") == "local"
 }
 
 func BuildRes(statusCode int, body interface{}) (events.APIGatewayProxyResponse, error) {

@@ -4,9 +4,9 @@ Globals:
     Runtime: go1.x
     Timeout: 3
     MemorySize: 128
-    # Environment:
-    #   Variables:
-    #     TABLE_NAME: data-table
+    Environment:
+      Variables:
+        API_ENV: !Ref APIEnv
 
 Parameters:
   Stage:
@@ -17,5 +17,12 @@ Parameters:
       - hml
       - prod
     Description: "Enter the stage name: dev, hml, or prod. Default is dev."
+  APIEnv:
+    Type: String
+    Default: online
+    AllowedValues:
+      - local
+      - online
+    Description: "Enter the API env: local or online. Default is online(aws), local is used during tests."
 
 Resources:
